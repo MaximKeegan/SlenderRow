@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var isDiagonal = false
+    @State var isDiagonal = true
     let colors: [Color] = [.yellow, .orange, .red, .pink, .purple, .blue, .cyan]
     
     var body: some View {
@@ -23,7 +23,7 @@ struct ContentView: View {
                     
                 } label: {
                     Text("\(idx+1)")
-                        .frame(width: 20, height: 30)
+                        .frame(width: isDiagonal ? 90 : 20, height: isDiagonal ? 90 : 20)
                 }
                 .tint(colors[idx%colors.count].opacity(0.7))
                 .buttonStyle(.bordered)
@@ -55,8 +55,8 @@ struct DiagonalLayout: Layout {
             let subviewSizes = subviews.map { proxy in
                 return proxy.sizeThatFits(.unspecified)
             }
-            var x = bounds.minX
-            var y = bounds.maxY
+        var x = CGFloat.zero
+            var y = bounds.maxY - 80
             
             for index in subviews.indices {
                 let subviewSize = subviewSizes[index]
@@ -71,7 +71,7 @@ struct DiagonalLayout: Layout {
                         proposal: sizeProposal
                     )
 
-                x += subviewSize.width
+                x += subviewSize.width / 2 - 10
                 y -= subviewSize.height
             }
     }
